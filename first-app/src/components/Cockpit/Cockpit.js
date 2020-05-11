@@ -1,6 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 
-const cockpit = (props) => {
+function Cockpit(props) {
+  useEffect(() => {
+    console.log("COCKPIT USEEFFECT");
+    // http request
+  }, []);
   const classes = [];
   if (props.persons.length <= 2) {
     classes.push("red"); // red class
@@ -17,6 +21,6 @@ const cockpit = (props) => {
       </button>
     </>
   );
-};
+}
 
-export default cockpit;
+export default Cockpit;
