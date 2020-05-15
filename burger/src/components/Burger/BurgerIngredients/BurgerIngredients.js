@@ -18,7 +18,7 @@ function BurgerIngredients(props) {
       );
       break;
     case "meat":
-      ingredient = <div className="Meet" />;
+      ingredient = <div className="Meat" />;
       break;
     case "cheese":
       ingredient = <div className="Cheese" />;
