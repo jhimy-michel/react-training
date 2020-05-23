@@ -5,11 +5,15 @@ import Backdrop from "../../UI/Backdrop/Backdrop";
 import "./SideDrawer.css";
 
 const SideDrawer = (props) => {
+  let classes = ["SideDrawer", "Close"];
+  if (props.open) {
+    classes = ["SideDrawer", "Open"];
+  }
   // ..
   return (
     <>
-      <Backdrop show />
-      <div className="SideDrawer">
+      <Backdrop show={props.open} clicked={props.closed} />
+      <div className={classes.join(" ")}>
         <div className="SideLogo">
           <Logo />
         </div>
