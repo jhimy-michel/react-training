@@ -24,6 +24,7 @@ class BurgerBuilder extends Component {
     error: false,
   };
   componentDidMount() {
+    console.log(this.props);
     axios
       .get("https://jhimbo-29c55.firebaseio.com/ingredients.json")
       .then((response) => {
@@ -84,28 +85,21 @@ class BurgerBuilder extends Component {
   };
   purchaseContinueHandler = () => {
     // alert("COMO ES CHOQUITO");
-    this.setState({ loading: true });
-    const order = {
-      ingredients: this.state.ingredients,
-      price: this.state.totalPrice,
-      customer: {
-        name: "Jhimy",
-        address: { street: "test street 1 ", zipcode: "1" },
-        email: "test@gmail.com",
-        country: "Bolivia",
-      },
-      deliverMethod: "fastest",
-    };
-    axios
-      .post("/orders.json", order)
-      .then((response) => {
-        console.log(response);
-        this.setState({ loading: false, purchasing: false });
-      })
-      .catch((err) => {
-        console.err(err);
-        this.setState({ loading: false, purchasing: false });
-      });
+    const paramsQ = [];
+
+    for (let i in this.state.ingredients) {
+      paramsQ.push(
+        encodeURIComponent(i) +
+          "=" +
+          encodeURIComponent(this.state.ingredients[i])
+      );
+    }
+    paramsQ.push("price=" + this.state.totalPrice);
+    const queryString = paramsQ.join("&");
+    this.props.history.push({
+      pathname: "/checkout",
+      search: "?" + queryString,
+    });
   };
   render() {
     const disabledInfo = {
