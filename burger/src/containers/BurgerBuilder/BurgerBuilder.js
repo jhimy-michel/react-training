@@ -50,22 +50,9 @@ class BurgerBuilder extends Component {
 
   purchaseContinueHandler = () => {
     // alert("COMO ES CHOQUITO");
-    const paramsQ = [];
-
-    for (let i in this.state.ingredients) {
-      paramsQ.push(
-        encodeURIComponent(i) +
-          "=" +
-          encodeURIComponent(this.state.ingredients[i])
-      );
-    }
-    paramsQ.push("price=" + this.state.totalPrice);
-    const queryString = paramsQ.join("&");
-    this.props.history.push({
-      pathname: "/checkout",
-      search: "?" + queryString,
-    });
+    this.props.history.push("/checkout");
   };
+
   render() {
     const disabledInfo = {
       ...this.props.ings,
