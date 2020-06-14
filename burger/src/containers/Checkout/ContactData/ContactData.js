@@ -6,7 +6,7 @@ import axios from "../../../axios-orders";
 import Spinner from "../../../components/UI/Spinner/Spinner";
 import Input from "../../../components/UI/Input/Input";
 import withErrorHandler from "../../../hoc/withErrorHandler/withErrorHandler";
-import { purchaseBurgerStart } from "../../../store/actions/index";
+import { purchaseBurger } from "../../../store/actions/index";
 import "./ContactData.css";
 
 class ContactData extends Component {
@@ -171,7 +171,7 @@ class ContactData extends Component {
         </Button>
       </form>
     );
-    if (this.state.loading) {
+    if (this.props.loading) {
       form = <Spinner />;
     }
 
@@ -185,12 +185,13 @@ class ContactData extends Component {
 }
 const mapStateToProps = (state) => {
   return {
-    ings: state.ingredients,
-    price: state.totalPrice,
+    ings: state.burgerBuilder.ingredients,
+    price: state.burgerBuilder.totalPrice,
+    loading: state.orders.loading,
   };
 };
 const mapDispatchToProps = (dispatch) => {
-  return { onInitPurchase: (order) => dispatch(purchaseBurgerStart(order)) };
+  return { onInitPurchase: (order) => dispatch(purchaseBurger(order)) };
 };
 
 export default connect(

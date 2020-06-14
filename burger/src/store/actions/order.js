@@ -1,4 +1,9 @@
-import { PURCHASE_BURGER_SUCCESS, PURCHASE_BURGER_FAIL } from "./actionsTypes";
+import {
+  PURCHASE_BURGER_SUCCESS,
+  PURCHASE_BURGER_FAIL,
+  PURCHASE_BURGER_START,
+  PURCHASE_INIT,
+} from "./actionsTypes";
 import axios from "../../axios-orders";
 
 export const purchaseBurgerSuccess = (id, orderData) => {
@@ -9,17 +14,24 @@ export const purchaseBurgerFail = (error) => {
   return { type: PURCHASE_BURGER_FAIL, error };
 };
 
-export const purchaseBurgerStart = (order) => {
+export const purchaseBurgerStart = () => {
+  return { type: PURCHASE_BURGER_START };
+};
+export const purchaseBurger = (order) => {
   return (dispatch) => {
+    dispatch(purchaseBurgerStart());
     axios
       .post("/orders.json", order)
       .then((response) => {
-        console.log(response);
-        dispatch(purchaseBurgerSuccess(response.data, order));
+        dispatch(purchaseBurgerSuccess(response.data.name, order));
       })
       .catch((err) => {
         console.err(err);
         dispatch(purchaseBurgerFail(err));
       });
   };
+};
+
+export const purchaseInit = () => {
+  return { type: PURCHASE_INIT };
 };
