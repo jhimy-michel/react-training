@@ -9,7 +9,11 @@ import OrderSummary from "../../components/OrderSummary/OrderSummary";
 import axios from "../../axios-orders";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
-import * as actionTypes from "../../store/actions";
+import {
+  addIngredient,
+  removeIngredient,
+  initIngredients,
+} from "../../store/actions/index";
 
 class BurgerBuilder extends Component {
   state = {
@@ -19,15 +23,7 @@ class BurgerBuilder extends Component {
   };
   componentDidMount() {
     console.log(this.props);
-    /* axios
-      .get("https://jhimbo-29c55.firebaseio.com/ingredients.json")
-      .then((response) => {
-        this.setState({ ingredients: response.data });
-      })
-      .catch((err) => {
-        console.error(err);
-        this.setState({ error: true });
-      }); */
+    this.props.onInitIngredient();
   }
 
   modalHandler = () => {
@@ -66,7 +62,7 @@ class BurgerBuilder extends Component {
           <>
             <Modal show={this.state.purchasing} modalClose={this.modalClose}>
               {this.state.loading ? (
-                this.state.error ? (
+                this.props.error ? (
                   <p>Vecinos salgan!!!</p>
                 ) : (
                   <Spinner />
@@ -90,7 +86,7 @@ class BurgerBuilder extends Component {
               handleModal={this.modalHandler}
             />
           </>
-        ) : this.state.error ? (
+        ) : this.props.error ? (
           <p>Vecinos salgan!!!</p>
         ) : (
           <Spinner />
@@ -104,18 +100,15 @@ const mapStateToProps = (state) => {
   return {
     ings: state.ingredients,
     price: state.totalPrice,
+    error: state.error,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onIngredientAdded: (ingName) =>
-      dispatch({ type: actionTypes.ADD_INGREDIENT, ingredientName: ingName }),
-    onIngredientRemove: (ingName) =>
-      dispatch({
-        type: actionTypes.REMOVE_INGREDIENT,
-        ingredientName: ingName,
-      }),
+    onIngredientAdded: (ingName) => dispatch(addIngredient(ingName)),
+    onIngredientRemove: (ingName) => dispatch(removeIngredient(ingName)),
+    onInitIngredient: () => dispatch(initIngredients()),
   };
 };
 
