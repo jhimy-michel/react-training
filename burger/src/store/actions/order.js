@@ -3,6 +3,9 @@ import {
   PURCHASE_BURGER_FAIL,
   PURCHASE_BURGER_START,
   PURCHASE_INIT,
+  FETCH_ORDERS_START,
+  FETCH_ORDERS_SUCCESS,
+  FETCH_ORDERS_FAIL,
 } from "./actionsTypes";
 import axios from "../../axios-orders";
 
@@ -34,4 +37,41 @@ export const purchaseBurger = (order) => {
 
 export const purchaseInit = () => {
   return { type: PURCHASE_INIT };
+};
+
+export const fetchOrdersSuccess = (orders) => {
+  return {
+    type: FETCH_ORDERS_SUCCESS,
+    orders: orders,
+  };
+};
+
+export const fetchOrdersStart = () => {
+  return {
+    type: FETCH_ORDERS_START,
+  };
+};
+
+export const fetchOrdersFail = (err) => {
+  return {
+    type: FETCH_ORDERS_FAIL,
+    error: err,
+  };
+};
+
+export const fetchOrders = () => {
+  return (dispatch) => {
+    dispatch(fetchOrdersStart());
+    axios
+      .get("/orders.json")
+      .then((res) => {
+        const fetchedOrders = [];
+        for (let key in res.data) {
+          fetchedOrders.push({ ...res.data[key], id: key });
+        }
+        console.log(fetchedOrders);
+        dispatch(fetchOrdersSuccess(fetchedOrders));
+      })
+      .catch((err) => dispatch(fetchOrdersFail(err)));
+  };
 };
