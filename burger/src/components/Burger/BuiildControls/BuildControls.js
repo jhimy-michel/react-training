@@ -27,7 +27,7 @@ const BuildControls = (props) => (
       onClick={props.handleModal}
       className="OrderButton"
     >
-      ORDER NOW!
+      {props.isAuth ? "ORDER NOW!" : "SIGN IN TO ORDER"}
     </button>
   </div>
 );

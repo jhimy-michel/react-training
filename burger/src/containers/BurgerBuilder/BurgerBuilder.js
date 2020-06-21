@@ -14,6 +14,7 @@ import {
   removeIngredient,
   initIngredients,
   purchaseInit,
+  setAuthRedirectPath,
 } from "../../store/actions/index";
 
 class BurgerBuilder extends Component {
@@ -28,7 +29,12 @@ class BurgerBuilder extends Component {
   }
 
   modalHandler = () => {
-    this.setState({ purchasing: true });
+    if (this.props.isAuthenticated) {
+      this.setState({ purchasing: true });
+    } else {
+      this.props.onSetAuthRedirectPath("/checkout");
+      this.props.history.push("/auth");
+    }
   };
   modalClose = () => {
     this.setState({ purchasing: false });
@@ -80,6 +86,7 @@ class BurgerBuilder extends Component {
             </Modal>
             <Burger ingredients={this.props.ings} />
             <BuildControls
+              isAuth={this.props.isAuthenticated}
               price={this.props.price}
               disabled={disabledInfo}
               purchasable={this.changePurchaseState(this.props.ings)}
@@ -103,6 +110,7 @@ const mapStateToProps = (state) => {
     ings: state.burgerBuilder.ingredients,
     price: state.burgerBuilder.totalPrice,
     error: state.burgerBuilder.error,
+    isAuthenticated: state.auth.token !== null,
   };
 };
 
@@ -112,6 +120,7 @@ const mapDispatchToProps = (dispatch) => {
     onIngredientRemove: (ingName) => dispatch(removeIngredient(ingName)),
     onInitIngredient: () => dispatch(initIngredients()),
     onInitiPurchase: () => dispatch(purchaseInit()),
+    onSetAuthRedirectPath: (path) => dispatch(setAuthRedirectPath(path)),
   };
 };
 
