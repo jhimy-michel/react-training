@@ -7,6 +7,7 @@ import Button from "../../components/UI/Button/Button";
 import "./Auth.css";
 import * as actions from "../../store/actions/auth";
 import Spinner from "../../components/UI/Spinner/Spinner";
+import { validateForm } from "../../store/utility";
 
 class Auth extends Component {
   state = {
@@ -42,27 +43,14 @@ class Auth extends Component {
       this.props.onSetAuthRedirectPath("/");
     }
   }
-  validateForm = (value, rules) => {
-    let isValid = true;
-    if (!rules) return true;
-    if (rules.required) {
-      isValid = value.trim() !== "" && isValid;
-    }
-    if (rules.minLength) {
-      isValid = value.length >= rules.minLength && isValid;
-    }
-    if (rules.maxLength) {
-      isValid = value.length <= rules.minLength && isValid;
-    }
-    return isValid;
-  };
+  
   inputChangeHandler = (event, controlName) => {
     const updatedControls = {
       ...this.state.controls,
       [controlName]: {
         ...this.state.controls[controlName],
         value: event.target.value,
-        valid: this.validateForm(
+        valid: validateForm(
           event.target.value,
           this.state.controls[controlName]
         ),

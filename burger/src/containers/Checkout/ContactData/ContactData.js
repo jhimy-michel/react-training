@@ -7,6 +7,7 @@ import Spinner from "../../../components/UI/Spinner/Spinner";
 import Input from "../../../components/UI/Input/Input";
 import withErrorHandler from "../../../hoc/withErrorHandler/withErrorHandler";
 import { purchaseBurger } from "../../../store/actions/index";
+import { validateForm } from "../../../store/utility";
 import "./ContactData.css";
 
 class ContactData extends Component {
@@ -91,21 +92,6 @@ class ContactData extends Component {
     loading: false,
   };
 
-  validateForm = (value, rules) => {
-    let isValid = true;
-    if (!rules) return true;
-    if (rules.required) {
-      isValid = value.trim() !== "" && isValid;
-    }
-    if (rules.minLength) {
-      isValid = value.length >= rules.minLength && isValid;
-    }
-    if (rules.maxLength) {
-      isValid = value.length <= rules.minLength && isValid;
-    }
-    return isValid;
-  };
-
   orderHandler = (ev) => {
     ev.preventDefault();
     this.setState({ loading: true });
@@ -121,20 +107,18 @@ class ContactData extends Component {
     this.props.onInitPurchase(order, this.props.token);
   };
   onChange = (ev, inputIdentifier) => {
-    console.log(ev.target.value);
     const updatedOrderForm = {
       ...this.state.orderForm,
     };
     const updatedOrderFormElement = { ...updatedOrderForm[inputIdentifier] };
     updatedOrderFormElement.value = ev.target.value;
-    updatedOrderFormElement.valid = this.validateForm(
+    updatedOrderFormElement.valid = validateForm(
       updatedOrderFormElement.value,
       updatedOrderFormElement.validation
     );
     updatedOrderFormElement.touched = true;
 
     updatedOrderForm[inputIdentifier] = updatedOrderFormElement;
-    console.log(updatedOrderForm);
 
     let isFormValid = true;
     for (let inputIdentifier in updatedOrderForm) {

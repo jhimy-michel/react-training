@@ -24,7 +24,6 @@ class BurgerBuilder extends Component {
     error: false,
   };
   componentDidMount() {
-    console.log(this.props);
     this.props.onInitIngredient();
   }
 

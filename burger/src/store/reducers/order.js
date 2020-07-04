@@ -22,7 +22,7 @@ const reducer = (state = initialState, action) => {
     case actionTypes.PURCHASE_BURGER_FAIL:
       return { ...state, loading: false };
     case actionTypes.PURCHASE_BURGER_START:
-      return { ...state, loading: false };
+      return { ...state, loading: true };
     case actionTypes.PURCHASE_INIT:
       return { ...state, purchased: false };
 

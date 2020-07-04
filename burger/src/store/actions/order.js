@@ -70,7 +70,6 @@ export const fetchOrders = (token) => {
         for (let key in res.data) {
           fetchedOrders.push({ ...res.data[key], id: key });
         }
-        console.log(fetchedOrders);
         dispatch(fetchOrdersSuccess(fetchedOrders));
       })
       .catch((err) => dispatch(fetchOrdersFail(err)));
